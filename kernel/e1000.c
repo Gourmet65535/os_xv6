@@ -144,12 +144,9 @@ e1000_recv(void)
   while ((desc->status & E1000_RXD_STAT_DD)) {
     if(desc->length > MBUF_SIZE) {
       panic("e1000 len");
-    }
-    // update the length reported in the descriptor.  
+    } 
     rx_mbufs[tail]->len = desc->length;
-    // deliver the mbuf to the network stack
     net_rx(rx_mbufs[tail]);     
-    // allocate a new mbuf replace the one given to net_rx()
     rx_mbufs[tail] = mbufalloc(0);
     if (!rx_mbufs[tail]) {
       panic("e1000 no mubfs");
